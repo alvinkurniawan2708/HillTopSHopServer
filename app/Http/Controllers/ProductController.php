@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Product;
+use App\Models\Products;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ProductController extends Controller
 {
@@ -13,14 +14,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        try{
-            return Product::all();
-        }
-        catch(\Exception $err){
-            return response()->json([
-                'message' => 'Server Error',
-            ],500);
-        }
+            return Products::all();
+        
     }
 
     /**
@@ -42,20 +37,22 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        try{
-            $checkProduct = Product::find($id);
-            if(!$checkProduct){
-                return response()->json([
-                    'message' => 'Product Not Found',
-                ],400);
-            }
-            return $checkProduct;
-        }
-        catch(\Exception $err){
-            return response()->json([
-                'message' => 'Server Error',
-            ],500);
-        }
+      
+        return Product::findOrFail($id);;
+        // try{
+        //     $checkProduct = Product::find($id);
+        //     if(!$checkProduct){
+        //         return response()->json([
+        //             'message' => 'Product Not Found',
+        //         ],400);
+        //     }
+        //     return $checkProduct;
+        // }
+        // catch(\Exception $err){
+        //     return response()->json([
+        //         'message' => 'Server Error',
+        //     ],500);
+        // }
     }
 
     /**
