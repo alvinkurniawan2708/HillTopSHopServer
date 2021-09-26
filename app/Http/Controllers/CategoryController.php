@@ -1,15 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Products;
-use Illuminate\Http\Request;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Validator;
+use App\Models\Categories;
+use Illuminate\Http\Request;
 
-class ProductController extends Controller
+class CategoryController extends Controller
 {
     public function __construct() {
-        $this->middleware('auth:api', ['except' => ['index']]);
+        $this->middleware('auth:api', ['except' => ['', '']]);
     }
     /**
      * Display a listing of the resource.
@@ -18,8 +17,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-            return Products::all();
-        
+        return Categories::all();
     }
 
     /**
@@ -31,24 +29,18 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(),[
-            'name' => 'required|string',
-            'description' => 'required|string',
-            'category_id' => 'required',
-            'brand' => 'required',
-            'price' => 'required',
-            'quantity' => 'required',
-            'rating' => 'required',
+            'categories_name' => 'required|string',
         ]);
-
+        
         if($validator->fails()){
             return response()->json(['error'=>$validator->errors(),400]);
         }
 
-        $products = Products::create($request->all());
+        $category = Categories::create($request->all());
 
         return response()->json([
-            'message' => ' Product upload success',
-            'products' => $products
+            'message' => ' Category upload success',
+            'category' => $category
         ],201);
     }
 
@@ -60,22 +52,7 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-      
-        return Product::findOrFail($id);;
-        // try{
-        //     $checkProduct = Product::find($id);
-        //     if(!$checkProduct){
-        //         return response()->json([
-        //             'message' => 'Product Not Found',
-        //         ],400);
-        //     }
-        //     return $checkProduct;
-        // }
-        // catch(\Exception $err){
-        //     return response()->json([
-        //         'message' => 'Server Error',
-        //     ],500);
-        // }
+        //
     }
 
     /**
