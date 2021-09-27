@@ -9,7 +9,7 @@ use Validator;
 class ProductController extends Controller
 {
     public function __construct() {
-        $this->middleware('auth:api', ['except' => ['index']]);
+        $this->middleware('auth:api', ['except' => ['index','show']]);
     }
     /**
      * Display a listing of the resource.
@@ -61,7 +61,7 @@ class ProductController extends Controller
     public function show($id)
     {
       
-        return Product::findOrFail($id);;
+        return Products::findOrFail($id);;
         // try{
         //     $checkProduct = Product::find($id);
         //     if(!$checkProduct){
